@@ -33,7 +33,7 @@ I've started adding more specific tests but in the interest of time I've just co
 
 ## Stabilise
 
-- [ ] Refactor for readability
+- [x] Refactor for readability
 
 ## Enhance
 
