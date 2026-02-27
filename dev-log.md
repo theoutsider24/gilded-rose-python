@@ -15,6 +15,8 @@ From what I can tell, the approval test setup is pretty messed up - I think the 
 
 After cleaning up and doing some coverage testing it actually looks like we've got all branches covered so I can start refactoring!
 
+Trying to formalise the strings into enums and breaking up the qaulity updating vs the sellin updating. We seem to currently just change the sellin right in the middle of a bunch of checks that use it which is a bit suspect, I reckon there are edge cases we haven't covered there yet but I'm going to deal with those when we come to implementing the spec.
+
 # Task list
 
 ## Bootstrap
@@ -28,3 +30,17 @@ After cleaning up and doing some coverage testing it actually looks like we've g
 - [ ] Refactor for readability
 
 ## Enhance
+
+Core requirements
+
+ - [ ] Once the sell by date has passed, Quality degrades twice as fast
+ - [x] The Quality of an item is never negative
+ - [ ] "Aged Brie" actually increases in Quality the older it gets
+ - [x] The Quality of an item is never more than 50
+ - [ ] "Sulfuras", being a legendary item, never has to be sold or decreases in Quality
+ - [ ] "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
+    - [ ] Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
+    - [ ] Quality drops to 0 after the concert
+
+- [ ] We have recently signed a supplier of conjured items. This requires an update to our system:
+    - [ ] "Conjured" items degrade in Quality twice as fast as normal items
