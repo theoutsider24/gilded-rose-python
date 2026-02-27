@@ -7,7 +7,19 @@ class ITEMTYPE(StrEnum):
     SULFURAS = "Sulfuras, Hand of Ragnaros"
 
 
+class Item:
+    def __init__(self, name, sell_in, quality):
+        self.name = name
+        self.sell_in = sell_in
+        self.quality = quality
+
+    def __repr__(self):
+        return f"{self.name}, {self.sell_in}, {self.quality}"
+
+
 class GildedRose:
+    items: list[Item]
+
     def __init__(self, items):
         self.items = items
 
@@ -18,43 +30,35 @@ class GildedRose:
 
             if item.sell_in > 0:
                 if item.name not in [ITEMTYPE.AGED_BRIE, ITEMTYPE.BACKSTAGE_PASS]:
-                    GildedRose.reduce_quality(item)
+                    GildedRose._alter_quality(item, -1)
                 elif item.name == ITEMTYPE.AGED_BRIE:
-                    GildedRose.increase_quality(item)
+                    GildedRose._alter_quality(item, 1)
                 elif item.name == ITEMTYPE.BACKSTAGE_PASS:
                     if item.sell_in <= 5:
-                        GildedRose.increase_quality(item, 2)
+                        GildedRose._alter_quality(item, 2)
                     elif item.sell_in <= 10:
-                        GildedRose.increase_quality(item, 3)
+                        GildedRose._alter_quality(item, 3)
             else:
                 if item.name not in [ITEMTYPE.AGED_BRIE, ITEMTYPE.BACKSTAGE_PASS]:
-                    GildedRose.reduce_quality(item, 2)
+                    GildedRose._alter_quality(item, -2)
                 elif item.name == ITEMTYPE.AGED_BRIE:
-                    GildedRose.increase_quality(item, 2)
+                    GildedRose._alter_quality(item, 2)
                 elif item.name == ITEMTYPE.BACKSTAGE_PASS:
-                    item.quality = 0
+                    GildedRose._alter_quality(item, -item.quality)
 
-            GildedRose.update_sell_in(item)
+            GildedRose._update_sell_in(item)
 
     @classmethod
-    def update_sell_in(cls, item):
+    def _update_sell_in(cls, item: Item):
         if item.name != ITEMTYPE.SULFURAS:
             item.sell_in = item.sell_in - 1
 
     @classmethod
-    def reduce_quality(cls, item, val: int = 1):
-        item.quality = max(0, item.quality - val)
+    def _alter_quality(cls, item: Item, val: int = 1):
+        if cls.is_conjured(item):
+            val = val * 2
+        item.quality = max(0, min(50, item.quality + val))
 
     @classmethod
-    def increase_quality(cls, item, val: int = 1):
-        item.quality = min(50, item.quality + val)
-
-
-class Item:
-    def __init__(self, name, sell_in, quality):
-        self.name = name
-        self.sell_in = sell_in
-        self.quality = quality
-
-    def __repr__(self):
-        return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
+    def is_conjured(cls, item: Item):
+        return "conjured" in [word.lower() for word in item.name.split(" ")]

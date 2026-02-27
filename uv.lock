@@ -110,6 +110,7 @@ source = { virtual = "." }
 [package.dev-dependencies]
 lint = [
     { name = "black" },
+    { name = "isort" },
     { name = "mypy" },
     { name = "pylint" },
 ]
@@ -124,6 +125,7 @@ test = [
 [package.metadata.requires-dev]
 lint = [
     { name = "black", specifier = ">=26.1.0" },
+    { name = "isort", specifier = ">=8.0.0" },
     { name = "mypy", specifier = ">=1.19.1" },
     { name = "pylint", specifier = ">=4.0.5" },
 ]

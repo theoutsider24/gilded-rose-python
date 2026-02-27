@@ -19,6 +19,9 @@ Trying to formalise the strings into enums and breaking up the qaulity updating 
 
 Only just realised instructions don't want me changing the Item class, whoops! Moving the logic out into classmethods for now. I'm focussing on readability so just getting some good structure that'll be easily to refactor again at a later date. Decisions need to be made at a product level about whether we'll need to support many products in future, which may lead us down a config-driven route, or whether it will remain limited in which case we may want to look at creating explicit classes.
 
+There's some ambiguity on whether normal items can be conjured - I'm going to make the assumption that they can't be for now however I think we should revise that in future.
+
+I've started adding more specific tests but in the interest of time I've just covered a couple of the types.
 
 # Task list
 
@@ -30,7 +33,7 @@ Only just realised instructions don't want me changing the Item class, whoops! M
 
 ## Stabilise
 
-- [ ] Refactor for readability
+- [x] Refactor for readability
 
 ## Enhance
 
@@ -45,5 +48,5 @@ Core requirements
     - [z] Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
     - [x] Quality drops to 0 after the concert
 
-- [ ] We have recently signed a supplier of conjured items. This requires an update to our system:
-    - [ ] "Conjured" items degrade in Quality twice as fast as normal items
+- [x] We have recently signed a supplier of conjured items. This requires an update to our system:
+    - [x] "Conjured" items degrade in Quality twice as fast as normal items
