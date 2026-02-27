@@ -10,12 +10,15 @@ We'll also want to start from a clean state so I'll be setting up a linter, form
 
 Turns out neither git nor docker and wsl were installed on this machine, creating some issues for tracking until that's ready.
 
+Devcontainer is working and I can run one of the tests but the approval test setup seems a bit complicated and non-standard so I think we can improve it. It's pretty trying to intercept what would be sent to stdout. Since there are few tests, I'm also going to migrate to pytest since the ergonomics are a bit nicer (it's actually already installed, handy!). I'll see if it's worth reproducing much of the test logic.
+From what I can tell, the approval test setup is pretty messed up - I think the approved version should probably represent what we expect but it seems to be empty? That library already looks pretty unsupported so I don't think we should use it. Just noticed the instructions also tell us to do a 'trust me bro' and commit whatever it outputs as the approved version which may lock in the expected behaviour, I'll just achieve the same thing by setting up my basic assertions and setting the quality values so the tests pass.
+
 # Task list
 
 ## Bootstrap
 
-- [ ] Create devcontainer
-- [ ] Get tests running
+- [x] Create devcontainer
+- [x] Get tests running
 - [ ] Initialise uv and lock versions
 
 ## Stabilise
