@@ -7,7 +7,17 @@ class ITEMTYPE(StrEnum):
     SULFURAS = "Sulfuras, Hand of Ragnaros"
 
 
+class Item:
+    def __init__(self, name, sell_in, quality):
+        self.name = name
+        self.sell_in = sell_in
+        self.quality = quality
+
+    def __repr__(self):
+        return f"{self.name}, {self.sell_in}, {self.quality}"
+
 class GildedRose:
+    items: list[Item]
     def __init__(self, items):
         self.items = items
 
@@ -37,24 +47,23 @@ class GildedRose:
             GildedRose.update_sell_in(item)
 
     @classmethod
-    def update_sell_in(cls, item):
+    def update_sell_in(cls, item: Item):
         if item.name != ITEMTYPE.SULFURAS:
             item.sell_in = item.sell_in - 1
 
     @classmethod
-    def reduce_quality(cls, item, val: int = 1):
+    def reduce_quality(cls, item: Item, val: int = 1):
+        if cls.is_conjured(item):
+            val = val * 2
         item.quality = max(0, item.quality - val)
 
     @classmethod
-    def increase_quality(cls, item, val: int = 1):
+    def increase_quality(cls, item: Item, val: int = 1):
+        if cls.is_conjured(item):
+            val = val * 2
         item.quality = min(50, item.quality + val)
 
+    @classmethod
+    def is_conjured(cls, item: Item):
+        return "conjured" in [word.lower() for word in item.name.split(" ")]
 
-class Item:
-    def __init__(self, name, sell_in, quality):
-        self.name = name
-        self.sell_in = sell_in
-        self.quality = quality
-
-    def __repr__(self):
-        return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
