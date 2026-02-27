@@ -1,4 +1,5 @@
 import pytest
+
 from gilded_rose import GildedRose, Item
 
 ITEMS: tuple[tuple[Item, int, int], ...] = (

@@ -16,8 +16,10 @@ class Item:
     def __repr__(self):
         return f"{self.name}, {self.sell_in}, {self.quality}"
 
+
 class GildedRose:
     items: list[Item]
+
     def __init__(self, items):
         self.items = items
 
@@ -60,4 +62,3 @@ class GildedRose:
     @classmethod
     def is_conjured(cls, item: Item):
         return "conjured" in [word.lower() for word in item.name.split(" ")]
-
