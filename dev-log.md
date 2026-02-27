@@ -13,14 +13,37 @@ Turns out neither git nor docker and wsl were installed on this machine, creatin
 Devcontainer is working and I can run one of the tests but the approval test setup seems a bit complicated and non-standard so I think we can improve it. It's pretty trying to intercept what would be sent to stdout. Since there are few tests, I'm also going to migrate to pytest since the ergonomics are a bit nicer (it's actually already installed, handy!). I'll see if it's worth reproducing much of the test logic.
 From what I can tell, the approval test setup is pretty messed up - I think the approved version should probably represent what we expect but it seems to be empty? That library already looks pretty unsupported so I don't think we should use it. Just noticed the instructions also tell us to do a 'trust me bro' and commit whatever it outputs as the approved version which may lock in the expected behaviour, I'll just achieve the same thing by setting up my basic assertions and setting the quality values so the tests pass.
 
+After cleaning up and doing some coverage testing it actually looks like we've got all branches covered so I can start refactoring!
+
+Trying to formalise the strings into enums and breaking up the qaulity updating vs the sellin updating. We seem to currently just change the sellin right in the middle of a bunch of checks that use it which is a bit suspect, I reckon there are edge cases we haven't covered there yet but I'm going to deal with those when we come to implementing the spec.
+
+Only just realised instructions don't want me changing the Item class, whoops! Moving the logic out into classmethods for now. I'm focussing on readability so just getting some good structure that'll be easily to refactor again at a later date. Decisions need to be made at a product level about whether we'll need to support many products in future, which may lead us down a config-driven route, or whether it will remain limited in which case we may want to look at creating explicit classes.
+
+
 # Task list
 
 ## Bootstrap
 
 - [x] Create devcontainer
 - [x] Get tests running
-- [ ] Initialise uv and lock versions
+- [x] Initialise uv and lock versions
 
 ## Stabilise
 
+- [ ] Refactor for readability
+
 ## Enhance
+
+Core requirements
+
+ - [x] Once the sell by date has passed, Quality degrades twice as fast
+ - [x] The Quality of an item is never negative
+ - [z] "Aged Brie" actually increases in Quality the older it gets
+ - [x] The Quality of an item is never more than 50
+ - [x] "Sulfuras", being a legendary item, never has to be sold or decreases in Quality
+ - [z] "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
+    - [z] Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
+    - [x] Quality drops to 0 after the concert
+
+- [ ] We have recently signed a supplier of conjured items. This requires an update to our system:
+    - [ ] "Conjured" items degrade in Quality twice as fast as normal items
