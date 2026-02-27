@@ -44,9 +44,30 @@ Core requirements
  - [z] "Aged Brie" actually increases in Quality the older it gets
  - [x] The Quality of an item is never more than 50
  - [x] "Sulfuras", being a legendary item, never has to be sold or decreases in Quality
- - [z] "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
-    - [z] Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
+ - [x] "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
+    - [x] Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
     - [x] Quality drops to 0 after the concert
 
 - [x] We have recently signed a supplier of conjured items. This requires an update to our system:
     - [x] "Conjured" items degrade in Quality twice as fast as normal items
+
+# Summary
+
+The focus on my approach here was:
+
+1. Make the codebase easier to work in by establishing standards-based tooling, commonly used libraries and portable dev environments
+
+2. Reproduce existing tests for stabilisation and start to build up new test patterns for more complex scenarios
+
+3. Improve readability without overengineering so that we can build forward on this repo
+
+## Ease vs simplicity
+
+A major design decision is to focus on keeping item rule configuration *simple* rather than making it *easy*.
+
+The easy approach might involve a more object-oriented approach, factories, decorator pattern etc. however at the size of the current codebase that would overly complicate what is quite a simple ruleset *for now*.
+
+I mention in my notes that there will be key decisions to make as we move forward. If we decide that we're going to very intentionally focus our business on a subset of items, we can build the system oriented around them and bring them into our domain language by creating specific classes. However if we, as a business, decide we're going to integrate with another magical vendor who has 1000s of objects available with different rules through some mystical API, then we may want to with a more configuration-driven route where we negotiate how to communicate the rules, whether there are common categories, whether we create our own webhook API for them to tell us rules rather than us inferring them etc.
+
+Without knowledge of business direction, the best course of action is keeping things clean and small, sticking to a more functional-programming approach for now.
+    
