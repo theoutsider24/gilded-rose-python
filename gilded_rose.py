@@ -13,35 +13,41 @@ class GildedRose:
 
     def update_quality(self):
         for item in self.items:
-            if (
-                item.name not in [ITEMTYPE.AGED_BRIE, ITEMTYPE.BACKSTAGE_PASS]
-            ):
-                if item.quality > 0:
-                    if item.name != ITEMTYPE.SULFURAS:
-                        item.reduce_quality()
-            else:
-                if item.quality < 50:
-                    item.increase_quality()
-                    if item.name == ITEMTYPE.BACKSTAGE_PASS:
-                        if item.sell_in < 11:
-                            if item.quality < 50:
-                                item.increase_quality()
-                        if item.sell_in < 6:
-                            if item.quality < 50:
-                                item.increase_quality()
-            if item.sell_in < 0:
-                if item.name != ITEMTYPE.AGED_BRIE:
-                    if item.name != ITEMTYPE.BACKSTAGE_PASS:
-                        if item.quality > 0:
-                            if item.name != ITEMTYPE.SULFURAS:
-                                item.reduce_quality()
-                    else:
-                        item.quality = item.quality - item.quality
-                else:
-                    if item.quality < 50:
-                        item.increase_quality()
+            if item.name == ITEMTYPE.SULFURAS:
+                continue
 
-            item.update_sellin()
+            if item.sell_in > 0:
+                if item.name not in [ITEMTYPE.AGED_BRIE, ITEMTYPE.BACKSTAGE_PASS]:
+                    GildedRose.reduce_quality(item)
+                elif item.name == ITEMTYPE.AGED_BRIE:
+                    GildedRose.increase_quality(item)
+                elif item.name == ITEMTYPE.BACKSTAGE_PASS:
+                    if item.sell_in <= 5:
+                        GildedRose.increase_quality(item, 2)
+                    elif item.sell_in <= 10:
+                        GildedRose.increase_quality(item, 3)
+            else:
+                if item.name not in [ITEMTYPE.AGED_BRIE, ITEMTYPE.BACKSTAGE_PASS]:
+                    GildedRose.reduce_quality(item, 2)
+                elif item.name == ITEMTYPE.AGED_BRIE:
+                    GildedRose.increase_quality(item, 2)
+                elif item.name == ITEMTYPE.BACKSTAGE_PASS:
+                    item.quality = 0
+
+            GildedRose.update_sell_in(item)
+
+    @classmethod
+    def update_sell_in(cls, item):
+        if item.name != ITEMTYPE.SULFURAS:
+            item.sell_in = item.sell_in - 1
+
+    @classmethod
+    def reduce_quality(cls, item, val: int = 1):
+        item.quality = max(0, item.quality - val)
+
+    @classmethod
+    def increase_quality(cls, item, val: int = 1):
+        item.quality = min(50, item.quality + val)
 
 
 class Item:
@@ -52,13 +58,3 @@ class Item:
 
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
-
-    def update_sellin(self):
-        if self.name != ITEMTYPE.SULFURAS:
-            self.sell_in = self.sell_in - 1
-
-    def reduce_quality(self, val: int = 1):
-        self.quality = max(0, self.quality - val)
-
-    def increase_quality(self, val: int = 1):
-        self.quality = min(50, self.quality + val)
