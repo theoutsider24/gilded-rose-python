@@ -35,9 +35,12 @@ class GildedRose:
                     GildedRose._alter_quality(item, 1)
                 elif item.name == ITEMTYPE.BACKSTAGE_PASS:
                     if item.sell_in <= 5:
-                        GildedRose._alter_quality(item, 2)
-                    elif item.sell_in <= 10:
                         GildedRose._alter_quality(item, 3)
+                    elif item.sell_in <= 10:
+                        GildedRose._alter_quality(item, 2)
+                    else:
+                        GildedRose._alter_quality(item, 1)
+
             else:
                 if item.name not in [ITEMTYPE.AGED_BRIE, ITEMTYPE.BACKSTAGE_PASS]:
                     GildedRose._alter_quality(item, -2)
