@@ -37,6 +37,34 @@ def test_gilded_rose_quality_updates():
 
 
 class TestQualityChange:
+    class TestBackstagePass:
+        @pytest.mark.parametrize(
+            "initial_quality,initial_sell_in,time,expected_quality",
+            [
+                (10, 1, 1, 13),
+                (10, 1, 2, 0),
+                (10, 10, 1, 12),
+                (10, 11, 2, 13),
+                (10, 11, 2, 13),
+                (10, 6, 3, 18),
+            ],
+        )
+        def test_quality(
+            self, initial_quality, initial_sell_in, time, expected_quality
+        ):
+            rose = GildedRose(
+                [
+                    Item(
+                        name="Backstage passes to a TAFKAL80ETC concert",
+                        sell_in=initial_sell_in,
+                        quality=initial_quality,
+                    )
+                ]
+            )
+            for _ in range(time):
+                rose.update_quality()
+            assert rose.items[0].quality == expected_quality
+
     class TestBrie:
         @pytest.mark.parametrize(
             "initial_quality,initial_sell_in,time,expected_quality",
